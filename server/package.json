@@ -1,0 +1,25 @@
+{
+  "name": "Vali",
+  "version": "1.0.0",
+  "description": "a simpe node/express demo",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon ./src/app.js",
+    "prod": "node app.js"
+  },
+  "keywords": [],
+  "author": "CB",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.8.0"
+  }
+}

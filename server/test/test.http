@@ -1,0 +1,58 @@
+### Locations ###
+
+### Get all locations ###
+GET http://localhost:3000/locations
+
+### Get a specific location by ID ###
+GET http://localhost:3000/locations/1
+
+### Create a new location ###
+POST http://localhost:3000/locations
+Content-Type: application/json
+
+{
+  "name": "New Location",
+  "address": "123 Main St, City, Country"
+}
+
+### Update a specific location ###
+PATCH http://localhost:3000/locations/3
+Content-Type: application/json
+
+{
+  "name": "Updated Location",
+  "address": "456 Updated St, City, Country"
+}
+
+### Delete a specific location ###
+DELETE http://localhost:3000/locations/3
+
+###
+### Checklists (for a specific location) ###
+
+### Get all checklists for a location ###
+GET http://localhost:3000/locations/1/checklists
+
+### Get a specific checklist by ID for a location ###
+GET http://localhost:3000/locations/1/checklists/2
+
+### Create a new checklist for a location ###
+POST http://localhost:3000/locations/1/checklists
+Content-Type: application/json
+
+{
+  "title": "Location 1 Checklist",
+  "items": ["Item 1", "Item 2", "Item 3"]
+}
+
+### Update a specific checklist for a location ###
+PATCH http://localhost:3000/locations/1/checklists/2
+Content-Type: application/json
+
+{
+  "title": "Updated Checklist Title",
+  "items": ["Updated Item 1", "Updated Item 2"]
+}
+
+### Delete a specific checklist for a location ###
+DELETE http://localhost:3000/locations/1/checklists/2

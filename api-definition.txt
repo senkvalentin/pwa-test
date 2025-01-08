@@ -1,0 +1,81 @@
+Location Routes:
+
+    Get all locations:
+
+GET /locations
+
+This fetches a list of all locations in the system.
+
+Get a specific location by ID:
+
+GET /locations/:id
+
+This fetches a single location using its id.
+
+Create a new location:
+
+POST /locations
+
+This creates a new location resource.
+
+Update a specific location:
+
+PATCH /locations/:id
+
+This updates the location resource specified by id.
+
+Delete a specific location:
+
+    DELETE /locations/:id
+
+    This deletes the location resource specified by id.
+
+Checklist Routes (with a location context):
+
+    Get all checklists for a location:
+
+GET /locations/:locationId/checklists
+
+This fetches all checklists for a specific location. The locationId parameter helps to identify which location’s checklists you want to retrieve.
+
+Get a specific checklist by ID for a location:
+
+GET /locations/:locationId/checklists/:id
+
+This fetches a specific checklist by id that belongs to the location specified by locationId.
+
+Create a new checklist for a location:
+
+POST /locations/:locationId/checklists
+
+This creates a new checklist for a specific location.
+
+Update a specific checklist for a location:
+
+PATCH /locations/:locationId/checklists/:id
+
+This updates a specific checklist by id that belongs to the location specified by locationId.
+
+Delete a specific checklist for a location:
+
+        DELETE /locations/:locationId/checklists/:id
+
+        This deletes a specific checklist by id for a given location.
+
+API Route Summary
+
+Here is the complete list of location and checklist routes:
+
+    Locations:
+        GET /locations - Get all locations
+        GET /locations/:id - Get a specific location by ID
+        POST /locations - Create a new location
+        PATCH /locations/:id - Update an existing location by ID
+        DELETE /locations/:id - Delete a location by ID
+
+    Checklists (for a specific location):
+        GET /locations/:locationId/checklists - Get all checklists for a location
+        GET /locations/:locationId/checklists/:id - Get a specific checklist for a location
+        POST /locations/:locationId/checklists - Create a new checklist for a location
+        PATCH /locations/:locationId/checklists/:id - Update a specific checklist for a location
+        DELETE /locations/:locationId/checklists/:id - Delete a specific checklist for a location

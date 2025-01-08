@@ -1,0 +1,105 @@
+/* Base Styling */
+body {
+  font-family: 'Familjen Grotesk', sans-serif;
+  margin: 0;
+  padding: 0;
+  color: #0d0d0d; /* Primary text color */
+  background-color: #f2f2f2; /* Neutral background */
+}
+
+/* Colors */
+:root {
+  --primary-blue: #2256f2;
+  --secondary-blue: #1b78f2;
+  --primary-green: #1bf251;
+  --primary-yellow: #f2b705;
+  --primary-black: #0d0d0d;
+}
+
+/* Buttons */
+button {
+  font-family: 'Familjen Grotesk', sans-serif;
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: var(--secondary-blue);
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  color: var(--primary-black);
+}
+
+/* Links */
+a {
+  color: var(--primary-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--secondary-blue);
+}
+
+/* Cards */
+.card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  color: var(--primary-black);
+}
+
+/* Utility Classes */
+.text-primary {
+  color: var(--primary-blue);
+}
+
+.text-secondary {
+  color: var(--secondary-blue);
+}
+
+.text-green {
+  color: var(--primary-green);
+}
+
+.text-yellow {
+  color: var(--primary-yellow);
+}
+
+.text-black {
+  color: var(--primary-black);
+}
+
+.bg-primary {
+  background-color: var(--primary-blue);
+}
+
+.bg-secondary {
+  background-color: var(--secondary-blue);
+}
+
+.bg-green {
+  background-color: var(--primary-green);
+}
+
+.bg-yellow {
+  background-color: var(--primary-yellow);
+}
+
+.bg-black {
+  background-color: var(--primary-black);
+}
