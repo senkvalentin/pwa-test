@@ -7,10 +7,10 @@ self.skipWaiting();
 precacheAndRoute(self.__WB_MANIFEST);
 registerRoute(new NavigationRoute(createHandlerBoundToURL('index.html')));
 
-const produkteRoute = new Route(
-  ({ url }) => url.pathname === '/products',
+const locationRoute = new Route(
+  ({ url }) => url.pathname === '/api/locations',
   new NetworkFirst({
-    cacheName: 'produkte-cache',
+    cacheName: 'locations-cache',
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 1,
@@ -35,5 +35,5 @@ const fonRoute = new Route(
     },
   }),
 );
-registerRoute(produkteRoute);
+registerRoute(locationRoute);
 registerRoute(fonRoute);
