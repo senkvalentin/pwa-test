@@ -21,19 +21,18 @@ const locationRoute = new Route(
     },
   }),
 );
-const fonRoute = new Route(
+const assetsRoute = new Route(
   ({ url }) => /.*assets\/.*.woff/.test(url.pathname),
   new CacheFirst({
-    cacheName: 'fon-cache',
+    cacheName: 'assets-cache',
     plugins: [
       new ExpirationPlugin({
         maxAgeSeconds: 60 * 60 * 24 * 1,
       }),
     ],
-    cacheableResponse: {
-      statuses: [0, 200],
-    },
+    cacheableResponse: {statuses: [0, 200]},
   }),
 );
 registerRoute(locationRoute);
-registerRoute(fonRoute);
+registerRoute(assetsRoute);
+

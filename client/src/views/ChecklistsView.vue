@@ -32,32 +32,22 @@ const getChecklists = async () => {
 const saveChecklist = async () => {
   try {
     if (isEditing.value) {
-      // Update existing checklist
       await axios.put(
         `http://localhost:3000/api/checklists/${currentChecklist.value.id}`,
         {
-          name: currentChecklist.value.name,
+          title: currentChecklist.value.name, // Change from "name" to "title"
         }
       );
-      $q.notify({
-        type: 'positive',
-        message: 'Checklist updated successfully!',
-      });
     } else {
-      // Create a new checklist
       const response = await axios.post(
         `http://localhost:3000/api/locations/${locationId.value}/checklists`,
         {
-          name: currentChecklist.value.name,
+          title: currentChecklist.value.name, // Change from "name" to "title"
         }
       );
-      checklists.value.push(response.data); // Add the new checklist to the list
-      $q.notify({
-        type: 'positive',
-        message: 'Checklist created successfully!',
-      });
+      checklists.value.push(response.data);
     }
-    getChecklists(); // Refresh the checklists
+    getChecklists();
     closeModal();
   } catch (error) {
     console.error('Error saving checklist:', error);
@@ -67,6 +57,7 @@ const saveChecklist = async () => {
     });
   }
 };
+
 
 // Open the modal for creating or editing a checklist
 const openModal = (checklist = null) => {

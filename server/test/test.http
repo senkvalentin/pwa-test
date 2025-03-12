@@ -1,7 +1,7 @@
 ### Locations ###
 
 ### Get all locations ###
-GET http://localhost:3000/locations
+GET http://localhost:3000/api/locations
 
 ### Get a specific location by ID ###
 GET http://localhost:3000/locations/1

@@ -19,7 +19,7 @@ export default defineConfig({
       includeAssets: ['**/*.{js,css,html,ico,jpg,png,svg,ttf,jpeg}'],
       strategies: 'injectManifest',
       srcDir: 'src',
-      filename: 'costum-service-worker.js',
+      filename: 'service-worker.js',
     }),
 
     quasar({
@@ -33,11 +33,5 @@ export default defineConfig({
   },
   preview: {
     port: 4173,
-    proxy: {
-      '/products': {
-        target: 'http://localhost:3000/',
-        changeOrigin: true,
-      },
-    },
   },
 });

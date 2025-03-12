@@ -1,9 +1,9 @@
 <script setup>
-import {ref, onMounted} from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import {useUserStore} from '@/stores/userStore.js';
-import {useQuasar} from 'quasar';
-import {useRouter} from 'vue-router';
+import { useUserStore } from '@/stores/userStore.js';
+import { useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
 
 const $q = useQuasar();
 const router = useRouter();
@@ -17,14 +17,17 @@ const filteredLocations = ref([]);
 // Modal Controls
 const showModal = ref(false);
 const isEditing = ref(false);
-const currentLocation = ref({id: null, name: ''});
+const currentLocation = ref({ id: null, name: '' });
+
+// Ladezustand für den Dialog
+const visible = ref(false);
 
 // Fetch locations from the API
 const getLocations = async () => {
   try {
     const response = await axios.get('http://localhost:3000/api/locations');
     locations.value = response.data;
-    filteredLocations.value = response.data; // Initialize filtered list
+    filteredLocations.value = response.data;
   } catch (error) {
     console.error('Error fetching locations:', error);
     $q.notify({
@@ -39,32 +42,69 @@ const filterLocations = () => {
   filteredLocations.value = locations.value.filter((location) =>
     location.name.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
+  console.log('filteredLocations:', filteredLocations.value);
+  
 };
 
-// Save or edit location
+// Async Funktion, um die GPS-Daten abzurufen und als Promise zurückzuliefern
+const getGpsData = () => {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+          });
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          $q.notify({
+            type: 'negative',
+            message: 'Failed to get location data.'
+          });
+          reject(error);
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by this browser.');
+      reject(new Error('Geolocation not supported'));
+    }
+  });
+};
+
+// Save or edit location (zuerst GPS abrufen und dann speichern)
 const saveLocation = async () => {
+  visible.value = true;
   try {
+    // Abrufen der GPS-Daten
+    const coords = await getGpsData();
+
     if (isEditing.value) {
       // Update location
       await axios.put(
         `http://localhost:3000/api/locations/${currentLocation.value.id}`,
         {
           name: currentLocation.value.name,
+          address: `Latitude: ${coords.latitude}, Longitude: ${coords.longitude}`
         }
       );
       $q.notify({
         type: 'positive',
-        message: 'Location updated successfully!',
+        message: 'Location updated successfully!'
       });
     } else {
       // Create new location
       const response = await axios.post('http://localhost:3000/api/locations', {
         name: currentLocation.value.name,
+        address: `Latitude: ${coords.latitude}, Longitude: ${coords.longitude}`,
+        latitude: coords.latitude,
+        longitude: coords.longitude
       });
-      locations.value.push(response.data); // Add the new location to the list
+      locations.value.push(response.data);
       $q.notify({
         type: 'positive',
-        message: 'Location created successfully!',
+        message: 'Location created successfully!'
       });
     }
     getLocations();
@@ -73,8 +113,10 @@ const saveLocation = async () => {
     console.error('Error saving location:', error);
     $q.notify({
       type: 'negative',
-      message: 'Error saving location. Please try again later.',
+      message: 'Error saving location. Please try again later.'
     });
+  } finally {
+    visible.value = false;
   }
 };
 
@@ -82,10 +124,10 @@ const saveLocation = async () => {
 const openModal = (location = null) => {
   if (location) {
     isEditing.value = true;
-    currentLocation.value = {...location}; // Copy the location to edit
+    currentLocation.value = { ...location }; // Copy the location to edit
   } else {
     isEditing.value = false;
-    currentLocation.value = {id: null, name: ''}; // Reset for new location
+    currentLocation.value = { id: null, name: '' };
   }
   showModal.value = true;
 };
@@ -93,7 +135,7 @@ const openModal = (location = null) => {
 // Close the modal
 const closeModal = () => {
   showModal.value = false;
-  currentLocation.value = {id: null, name: ''};
+  currentLocation.value = { id: null, name: '' };
 };
 
 // Navigate to checklists page when a location is clicked
@@ -102,7 +144,7 @@ const goToChecklists = (locationId) => {
 };
 
 onMounted(() => {
-  getLocations(); // Fetch locations on component mount
+  getLocations();
 });
 
 // Logout function
@@ -110,12 +152,11 @@ const logout = () => {
   user.logout();
   $q.notify({
     type: 'positive',
-    message: 'Successfully logged out!',
+    message: 'Successfully logged out!'
   });
   router.push('/');
 };
 </script>
-
 <template>
   <q-page-container class="main-container">
     <!-- Header -->
@@ -162,9 +203,8 @@ const logout = () => {
             @click="goToChecklists(location.id)"
           >
             <q-item-section>
-              <q-item-label class="location-name">{{
-                location.name
-              }}</q-item-label>
+              <q-item-label class="location-name">{{ location.name }}</q-item-label>
+               <q-item-label class=" location-name">{{ location.address }}</q-item-label>
             </q-item-section>
             <q-item-section side>
               <q-btn
@@ -196,19 +236,13 @@ const logout = () => {
           ></q-input>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Cancel"
-            color="negative"
-            @click="closeModal"
-          ></q-btn>
-          <q-btn
-            flat
-            label="Save"
-            color="primary"
-            @click="saveLocation"
-          ></q-btn>
+          <q-btn flat label="Cancel" color="negative" @click="closeModal"></q-btn>
+          <q-btn flat label="Save" color="primary" @click="saveLocation"></q-btn>
         </q-card-actions>
+        <!-- q-inner-loading wird basierend auf "visible" angezeigt -->
+        <q-inner-loading :showing="visible">
+          <q-spinner-gears size="50px" color="primary" />
+        </q-inner-loading>
       </q-card>
     </q-dialog>
   </q-page-container>
